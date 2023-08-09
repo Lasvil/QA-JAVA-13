@@ -90,6 +90,70 @@ public class TodosTest {
     }
 
     @Test
+    public void searchSuccessMeeting() {
+        Meeting meeting = new Meeting(23, "Иду", "Туда", "То");
+
+        Todos todos = new Todos();
+
+        todos.add(meeting);
+
+        Task[] expected = {meeting};
+        Task[] actual = todos.search("уд");
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void searchSuccessEpic() {
+        String[] subtasks = {"Дело", "Закрыть", "Язык"};
+        Epic epic = new Epic(33, subtasks);
+
+        Todos todos = new Todos();
+
+        todos.add(epic);
+
+        Task[] expected = {epic};
+        Task[] actual = todos.search("крыт");
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void searchSome() {
+        Meeting meeting = new Meeting(140, "Исправить", "Ошибки", "ДЗ");
+        Meeting meeting1 = new Meeting(139, "Исправление", "Всего", "Вся");
+        SimpleTask simpleTask = new SimpleTask(4, "Исправка");
+        SimpleTask simpleTask1 = new SimpleTask(2, "Исправляющий");
+        String[] subtasks = {"Исправлено", "Яйца", "Хлеб"};
+        Epic epic = new Epic(1, subtasks);
+        String[] subtasks1 = {"Исправлять", "Яйца", "Хлеб"};
+        Epic epic1 = new Epic(1, subtasks1);
+        Todos todos = new Todos();
+
+        todos.add(meeting);
+        todos.add(meeting1);
+        todos.add(simpleTask);
+        todos.add(simpleTask1);
+        todos.add(epic);
+        todos.add(epic1);
+
+        Task[] expected = {meeting, meeting1, simpleTask, simpleTask1, epic, epic1};
+        Task[] actual = todos.search("прав");
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void searchNothing() {
+        SimpleTask simpleTask = new SimpleTask(63, "Сделать домашние дела");
+
+        Todos todos = new Todos();
+
+        todos.add(simpleTask);
+
+        Task[] expected = {};
+        Task[] actual = todos.search("бить");
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
     public void matchesSuccessSimple() {
         SimpleTask simpleTask = new SimpleTask(5, "Позвонить родителям");
         boolean expected = true;
